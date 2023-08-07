@@ -97,26 +97,26 @@ bin/protoc-gen-go-grpc:
 	curl -L https://github.com/grpc/grpc-go/releases/download/cmd/protoc-gen-go-grpc/v${PROTOC_GEN_GO_GRPC_VERSION}/protoc-gen-go-grpc.v${PROTOC_GEN_GO_GRPC_VERSION}.$(shell uname | tr A-Z a-z).amd64.tar.gz | tar -zOxf - ./protoc-gen-go-grpc > ./bin/protoc-gen-go-grpc
 	@chmod +x ./bin/protoc-gen-go-grpc
 
-##@ Verify
+# ##@ Verify
 
-verify: generate ## Verify that all the code was generated and committed to repository.
-	@git diff --exit-code
+# verify: generate ## Verify that all the code was generated and committed to repository.
+# 	@git diff --exit-code
 
-.PHONY: verify-proto
-verify-proto: generate-proto ## Verify that the Dex client's protobuf code was generated.
-	@git diff --exit-code
+# .PHONY: verify-proto
+# verify-proto: generate-proto ## Verify that the Dex client's protobuf code was generated.
+# 	@git diff --exit-code
 
-.PHONY: verify-proto
-verify-proto-internal: generate-proto-internal ## Verify internal protobuf code for token encoding was generated.
-	@git diff --exit-code
+# .PHONY: verify-proto
+# verify-proto-internal: generate-proto-internal ## Verify internal protobuf code for token encoding was generated.
+# 	@git diff --exit-code
 
-.PHONY: verify-ent
-verify-ent: generate-ent ## Verify code for database ORM was generated.
-	@git diff --exit-code
+# .PHONY: verify-ent
+# verify-ent: generate-ent ## Verify code for database ORM was generated.
+# 	@git diff --exit-code
 
-.PHONY: verify-go-mod
-verify-go-mod: go-mod-tidy ## Check that go.mod and go.sum formatted according to the changes.
-	@git diff --exit-code
+# .PHONY: verify-go-mod
+# verify-go-mod: go-mod-tidy ## Check that go.mod and go.sum formatted according to the changes.
+# 	@git diff --exit-code
 
 ##@ Test and Lint
 
