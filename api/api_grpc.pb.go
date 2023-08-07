@@ -60,6 +60,14 @@ type DexClient interface {
 	RevokeRefresh(ctx context.Context, in *RevokeRefreshReq, opts ...grpc.CallOption) (*RevokeRefreshResp, error)
 	// VerifyPassword returns whether a password matches a hash for a specific email or not.
 	VerifyPassword(ctx context.Context, in *VerifyPasswordReq, opts ...grpc.CallOption) (*VerifyPasswordResp, error)
+	// Create Connector on the fly
+	CreateConnector(ctx context.Context, in *Connector, opts ...grpc.CallOption) (*Connector, error)
+	// Update Connector on the fly
+	UpdateConnector(ctx context.Context, in *Connector, opts ...grpc.CallOption) (*Connector, error)
+	// DeleteConnector deletes the corresponding connector
+	DeleteConnector(ctx context.Context, in *DeleteConnectorReq, opts ...grpc.CallOption) (*DeleteConnectorResp, error)
+	// ListConnector lists the available connectors
+	ListConnector(ctx context.Context, in *ListConnectorReq, opts ...grpc.CallOption) (*ListConnectorResp, error)
 }
 
 type dexClient struct {
@@ -169,6 +177,42 @@ func (c *dexClient) VerifyPassword(ctx context.Context, in *VerifyPasswordReq, o
 	return out, nil
 }
 
+func (c *dexClient) CreateConnector(ctx context.Context, in *Connector, opts ...grpc.CallOption) (*Connector, error) {
+	out := new(Connector)
+	err := c.cc.Invoke(ctx, "/api.Dex/CreateConnector", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dexClient) UpdateConnector(ctx context.Context, in *Connector, opts ...grpc.CallOption) (*Connector, error) {
+	out := new(Connector)
+	err := c.cc.Invoke(ctx, "/api.Dex/UpdateConnector", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dexClient) DeleteConnector(ctx context.Context, in *DeleteConnectorReq, opts ...grpc.CallOption) (*DeleteConnectorResp, error) {
+	out := new(DeleteConnectorResp)
+	err := c.cc.Invoke(ctx, "/api.Dex/DeleteConnector", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dexClient) ListConnector(ctx context.Context, in *ListConnectorReq, opts ...grpc.CallOption) (*ListConnectorResp, error) {
+	out := new(ListConnectorResp)
+	err := c.cc.Invoke(ctx, "/api.Dex/ListConnector", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DexServer is the server API for Dex service.
 // All implementations must embed UnimplementedDexServer
 // for forward compatibility
@@ -197,6 +241,14 @@ type DexServer interface {
 	RevokeRefresh(context.Context, *RevokeRefreshReq) (*RevokeRefreshResp, error)
 	// VerifyPassword returns whether a password matches a hash for a specific email or not.
 	VerifyPassword(context.Context, *VerifyPasswordReq) (*VerifyPasswordResp, error)
+	// Create Connector on the fly
+	CreateConnector(context.Context, *Connector) (*Connector, error)
+	// Update Connector on the fly
+	UpdateConnector(context.Context, *Connector) (*Connector, error)
+	// DeleteConnector deletes the corresponding connector
+	DeleteConnector(context.Context, *DeleteConnectorReq) (*DeleteConnectorResp, error)
+	// ListConnector lists the available connectors
+	ListConnector(context.Context, *ListConnectorReq) (*ListConnectorResp, error)
 	mustEmbedUnimplementedDexServer()
 }
 
@@ -236,6 +288,18 @@ func (UnimplementedDexServer) RevokeRefresh(context.Context, *RevokeRefreshReq) 
 }
 func (UnimplementedDexServer) VerifyPassword(context.Context, *VerifyPasswordReq) (*VerifyPasswordResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyPassword not implemented")
+}
+func (UnimplementedDexServer) CreateConnector(context.Context, *Connector) (*Connector, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateConnector not implemented")
+}
+func (UnimplementedDexServer) UpdateConnector(context.Context, *Connector) (*Connector, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateConnector not implemented")
+}
+func (UnimplementedDexServer) DeleteConnector(context.Context, *DeleteConnectorReq) (*DeleteConnectorResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteConnector not implemented")
+}
+func (UnimplementedDexServer) ListConnector(context.Context, *ListConnectorReq) (*ListConnectorResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListConnector not implemented")
 }
 func (UnimplementedDexServer) mustEmbedUnimplementedDexServer() {}
 
@@ -448,6 +512,78 @@ func _Dex_VerifyPassword_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Dex_CreateConnector_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Connector)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DexServer).CreateConnector(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Dex/CreateConnector",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DexServer).CreateConnector(ctx, req.(*Connector))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dex_UpdateConnector_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Connector)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DexServer).UpdateConnector(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Dex/UpdateConnector",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DexServer).UpdateConnector(ctx, req.(*Connector))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dex_DeleteConnector_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteConnectorReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DexServer).DeleteConnector(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Dex/DeleteConnector",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DexServer).DeleteConnector(ctx, req.(*DeleteConnectorReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dex_ListConnector_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListConnectorReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DexServer).ListConnector(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Dex/ListConnector",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DexServer).ListConnector(ctx, req.(*ListConnectorReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Dex_ServiceDesc is the grpc.ServiceDesc for Dex service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -498,6 +634,22 @@ var Dex_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "VerifyPassword",
 			Handler:    _Dex_VerifyPassword_Handler,
+		},
+		{
+			MethodName: "CreateConnector",
+			Handler:    _Dex_CreateConnector_Handler,
+		},
+		{
+			MethodName: "UpdateConnector",
+			Handler:    _Dex_UpdateConnector_Handler,
+		},
+		{
+			MethodName: "DeleteConnector",
+			Handler:    _Dex_DeleteConnector_Handler,
+		},
+		{
+			MethodName: "ListConnector",
+			Handler:    _Dex_ListConnector_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
